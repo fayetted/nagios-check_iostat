@@ -171,7 +171,10 @@ fi
 
 #------------Parameter Check-------------
 #Checks for sane Disk name:
-[ ! -b "/dev/$disk" ] && echo "ERROR: Device incorrectly specified" && help
+if [ ! `echo $disk | grep ^\/dev\/` ]; then
+    disk="/dev/$disk"
+fi
+[ ! -b "$disk" ] && echo "ERROR: Device incorrectly specified" && help
 
 #Checks for sane warning/critical levels
 if ( [[ $warning -ne "99999" ]] || [[ $critical -ne "99999" ]] ); then
