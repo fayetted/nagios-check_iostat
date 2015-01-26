@@ -192,7 +192,7 @@ fi
 # first run of iostat shows statistics since last reboot, second one shows current vaules of hdd
 # -d is the duration for second run, -x the rest
 
-TMPX=`$iostat $disk -x -k -d $sampleTime $samples | grep $disk | tail -1`
+TMPX=`$iostat $disk -x -k -d $sampleTime $samples | sed '/^$/d' | tail -1`
 
 #------------IO Test-------------
 if [ "$io" == "1" ]; then
