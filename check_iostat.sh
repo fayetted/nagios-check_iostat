@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 #----------check_iostat.sh-----------
 #
 # Version 0.0.2 - Jan/2009
@@ -200,7 +199,7 @@ TMPX=`$iostat $disk -x -k -d $sampleTime $samples | sed '/^$/d' | tail -1`
 #------------IO Test-------------
 if [ "$io" == "1" ]; then
 
-    TMPD=`$iostat $disk -k -d $sampleTime $samples | grep $disk | tail -1`
+    TMPD=`$iostat $disk -k -d $sampleTime $samples | sed '/^$/d' | tail -1`
     #Requests per second:
     tps=`echo "$TMPD" | awk '{print $2}'`
     read_sec=`echo "$TMPX" | awk '{print $4}'`
@@ -321,7 +320,9 @@ fi
 
 # now output the official result
 echo -n "$MSG"
-if [ "x$printperfdata" == "x1" ]; then echo -n "$PERFDATA"; fi
+if [ "x$printperfdata" == "x1" ]; then
+    echo -n "$PERFDATA";
+fi
 echo ""
 exit $status
 #----------/check_iostat.sh-----------
