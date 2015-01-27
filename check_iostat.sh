@@ -1,4 +1,5 @@
 #!/bin/bash
+# set -x
 #----------check_iostat.sh-----------
 #
 # Version 0.0.2 - Jan/2009
@@ -177,11 +178,15 @@ fi
 
 #Checks for sane warning/critical levels
 if ( [[ $warning -ne "99999" ]] || [[ $critical -ne "99999" ]] ); then
-    if ( [[ "$warn_1" -gt "$crit_1" ]] || [[ "$warn_2" -gt "$crit_2" ]] ); then
-        echo "ERROR: critical levels must be higher than warning levels" && help
-    elif ( [[ $io -eq "1" ]] || [[ $waittime -eq "1" ]] ); then
-        if ( [[ "$warn_3" -gt "$crit_3" ]] || [[ "$warn_4" -gt "$crit_4" ]] || [[ "$warn_5" -gt "$crit_5" ]] ); then
+    if ( [ "`echo "$warn_1 > $crit_1" | bc`" == "1" ]  || \
+         [ "`echo "$warn_2 > $crit_2" | bc`" == "1" ] ); then
             echo "ERROR: critical levels must be higher than warning levels" && help
+    elif ( [[ $io -eq "1" ]] || [[ $waittime -eq "1" ]] ); then
+        # if ( [[ "$warn_3" -gt "$crit_3" ]] || [[ "$warn_4" -gt "$crit_4" ]] || [[ "$warn_5" -gt "$crit_5" ]] ); then
+        if ( [ "`echo "$warn_3 > $crit_3" | bc`" == "1" ]  || \
+             [ "`echo "$warn_4 > $crit_4" | bc`" == "1" ]  || \
+             [ "`echo "$warn_5 > $crit_5" | bc`" == "1" ]  ); then
+                echo "ERROR: critical levels must be higher than warning levels" && help
         fi
     fi
 fi
@@ -298,7 +303,7 @@ if [ "$waittime" == "1" ]; then
     if [ "$warning" -ne "99999" ]; then
         if ( [ "`echo "$avgwait >= $warn_1" | bc`" == "1" ] || [ "`echo "$avgrwait >= $warn_2" | bc -q`" == "1" ] || \
             [ "`echo "$avgwwait >= $warn_3" | bc`" == "1" ] || [ "`echo "$avgsvctime >= $warn_4" | bc -q`" == "1" ] || \
-            [ "`echo "$avgcpuutil >= $warn_5" | bc`" == "1" ] ); then
+            [ "`echo "$avgcpuutil >= \"$warn_5\"" | bc`" == "1" ] ); then
             STATE="WARNING"
             status=1
         fi
