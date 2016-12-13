@@ -46,6 +46,12 @@
 #
 # by Christian Westergard / christian.westergard@gmail.com
 #
+# Version 0.0.8 - Dec/2016
+# Changes:
+# - Fixed performance data for Centreon
+#
+#
+
 
 iostat=`which iostat 2>/dev/null`
 bc=`which bc 2>/dev/null`
@@ -240,7 +246,7 @@ if [ "$io" == "1" ]; then
     fi
     # Printing the results:
     MSG="$STATE - I/O stats: Transfers/Sec=$tps Read Requests/Sec=$read_sec Write Requests/Sec=$written_sec KBytes Read/Sec=$kbytes_read_sec KBytes_Written/Sec=$kbytes_written_sec"
-    PERFDATA=" | total_io_sec'=$tps; read_io_sec=$read_sec; write_io_sec=$written_sec; kbytes_read_sec=$kbytes_read_sec; kbytes_written_sec=$kbytes_written_sec;"
+    PERFDATA=" | total_io_sec=$tps read_io_sec=$read_sec write_io_sec=$written_sec kbytes_read_sec=$kbytes_read_sec kbytes_written_sec=$kbytes_written_sec"
 fi
 #------------IO Test End-------------
 
@@ -270,7 +276,7 @@ if [ "$queue" == "1" ]; then
 
     # Printing the results:
     MSG="$STATE - Disk Queue Stats: Average Request Size=$qsize Average Queue Length=$qlength"
-    PERFDATA=" | qsize=$qsize; queue_length=$qlength;"
+    PERFDATA=" | qsize=$qsize queue_length=$qlength"
 fi
 #------------Queue Test End-------------
 
@@ -319,7 +325,7 @@ if [ "$waittime" == "1" ]; then
 
     # Printing the results:
     MSG="$STATE - Wait Time Stats: Avg I/O Wait Time (ms)=$avgwait Avg Read Wait Time (ms)=$avgrwait Avg Write Wait Time (ms)=$avgwwait Avg Service Wait Time (ms)=$avgsvctime Avg CPU Utilization=$avgcpuutil"
-    PERFDATA=" | avg_io_waittime_ms=$avgwait; avg_r_waittime_ms=$avgrwait; avg_w_waittime_ms=$avgwwait; avg_service_waittime_ms=$avgsvctime; avg_cpu_utilization=$avgcpuutil;"
+    PERFDATA=" | avg_io_waittime_ms=$avgwait avg_r_waittime_ms=$avgrwait avg_w_waittime_ms=$avgwwait avg_service_waittime_ms=$avgsvctime avg_cpu_utilization=$avgcpuutil"
 fi
 #------------Wait Time End-------------
 
