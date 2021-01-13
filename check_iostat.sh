@@ -99,7 +99,7 @@ waittime=0
 printperfdata=0
 STATE="OK"
 sampleTime=3
-samples=2i
+samples=2
 status=0
 
 MSG=""
